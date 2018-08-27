@@ -1,4 +1,5 @@
 // 封装
+window.log = console.log.bind(console)
 var _main = function() {
     var images = {
         bullet: './img/bullet.png',
