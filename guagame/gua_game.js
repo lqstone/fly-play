@@ -11,10 +11,12 @@ class GuaGame {
                 //event
             var self = this
             window.addEventListener('keydown', (event) => {
-                this.keydowns[event.key] = true
+                // this.keydowns[event.key] = true
+                this.keydowns[event.key] = 'down'
             })
             window.addEventListener('keyup', function(event) {
-                self.keydowns[event.key] = false
+                // self.keydowns[event.key] = false
+                self.keydowns[event.key] = 'up'
             })
             this.init()
         }
@@ -24,7 +26,7 @@ class GuaGame {
         return this.i
     }
     drawImage(img) {
-        this.context.drawImage(img.texture, img.x, img.y)
+        this.context.drawImage(img.texture, img.x, img.y, img.w, img.h)
     }
     registerAction(key, callback) {
         this.actions[key] = callback
@@ -36,33 +38,35 @@ class GuaGame {
         this.scene.draw()
     }
     runloop() {
-        // body...
-        // events 
-        var g = this
-        var actions = Object.keys(g.actions)
+        var actions = Object.keys(this.actions)
         for (var i = 0; i < actions.length; i++) {
             var key = actions[i];
-            if (g.keydowns[key]) {
+            var status = this.keydowns[key]
+            if (status == 'down') {
                 // key dowm action
-                g.actions[key]()
+                this.actions[key]('down')
+            } else if (status == 'up') {
+                this.actions[key]('up')
+                this.keydowns[key] = null
             }
         }
-        g.update && g.update();
+        this.update && this.update();
         // clear
-        g.context.clearRect(0, 0, g.canvas.width, g.canvas.height);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // draw
-        g.draw();
-        setTimeout(function() {
-            g.runloop();
+        this.draw();
+        setTimeout(() => {
+            this.runloop();
+            // requestAnimationFrame(this.runloop)
         }, 1000 / window.fps)
+        
     }
     init() {
         var loads = [];
         var g = this
             // 预先载入所有图片
         var names = Object.keys(g.images);
-        // console.log(names)
         for (let i = 0; i < names.length; i++) {
             let name = names[i];
             let path = g.images[name];
@@ -86,7 +90,6 @@ class GuaGame {
         //     h: img.height,
         //     image: img,
         // }
-        // console.log(img)
         return img;
     }
 
@@ -95,9 +98,7 @@ class GuaGame {
         // game begin
         this.test = { test: 123123 }
         this.scene = scene
-        setTimeout(() => {
-            this.runloop();
-        }, 1000 / window.fps)
+        this.runloop()
     }
 
     replaceScene(scene) {

@@ -9,12 +9,11 @@ class GuaScene {
         return i
     }
     addElement(img) {
-        img.scene = this
+        img.scene = this   // 获取到this
         this.elements.push(img)
     }
     removeElement(img) {
         var index = this.elements.indexOf(img);
-        console.log("index", index)
         this.elements.splice(index, 1);
     }
     draw() {

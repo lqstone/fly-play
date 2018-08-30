@@ -9,7 +9,7 @@ class Scene extends GuaScene {
     }
     setup() {
         // this.bg = new GuaImage(this.game, 'bg')
-        this.numberOfEnemies = 10
+        this.numberOfEnemies = 1
             // this.bg = new Background(this.game)
         this.player = new Player(this.game)
         this.grounds = []
@@ -19,7 +19,7 @@ class Scene extends GuaScene {
             bg.y = -568 * i
             this.addElement(bg)
             this.grounds.push(bg)
-        }
+        }   
         // this.addElement(this.bg)
         this.addEnemies()
         this.player.x = 100
@@ -109,7 +109,6 @@ class Bullet extends GuaImage {
     constructor(game) {
         super(game, 'bullet')
         this.setup()
-        console.log("this", this)
     }
     setup() {
         this.speed = 5
@@ -163,7 +162,7 @@ class Player extends GuaImage {
         if (this.y > 568 - this.h) {
             this.y = 568 - this.h
         }
-    }
+    }   
     moveUp() {
         this.y -= this.speed
         if (this.y < 0) {
@@ -192,15 +191,19 @@ class Player extends GuaImage {
             var b = new Bullet(this.game)
             b.x = x
             b.y = y
-            this.scene.addElement(b)
+            this.scene.addElement(b)   // 获取父类的addElement
         }
     }
 }
+
+
 const randomBetween = function(start, end) {
-        var n = Math.random() * (end - start + 1)
-        return Math.floor(n + start)
-    }
+    var n = Math.random() * (end - start + 1)
+    return Math.floor(n + start)
+}
     // 敌🐔
+
+
 class Enemy extends GuaImage {
     constructor(game) {
         var type = randomBetween(0, 2)

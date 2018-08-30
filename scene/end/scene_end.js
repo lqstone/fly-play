@@ -1,5 +1,5 @@
 // 继承GuaScene
-class SceneEnd extends GuaScene {
+class SceneEnd extends GuaScene { 
     constructor(game) {
         super(game)
         game.registerAction('r', function() {
