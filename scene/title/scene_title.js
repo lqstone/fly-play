@@ -15,11 +15,11 @@ class SceneTitle extends GuaScene {
         this.addElement(w)
         this.setupInputs()
     }
-    // draw() {
-    //     // super.draw()
-    //     // this.game.context.font = "16px serif";
-    //     // this.game.context.fillText("press K  game begin! ", 100, 400);
-    // }
+    draw() {
+        super.draw()
+        this.game.context.font = "16px serif";
+        this.game.context.fillText("press K  game begin! ", 100, 400);
+    }
     setupInputs() {
         this.game.registerAction('a', (keyStatus) => {
             this.w.move(-5, keyStatus)

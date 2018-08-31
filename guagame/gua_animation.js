@@ -21,6 +21,8 @@ class GuaAnimation {
         this.x = 100
         this.y = 100
 		this.texture = this.frames()[0]
+        this.w = this.texture.width / 5
+        this.h = this.texture.height / 5
         // log(1111, this.texture.width)
         // log(1111, this.texture.height)
 		this.framesIndex = 0        	// 当前图片下标
@@ -45,23 +47,30 @@ class GuaAnimation {
 		}
 	}
 	
-	flipImage(image, ctx, flipH, flipV) {
-	    var scaleH = flipH ? -1 : 1, // Set horizontal scale to -1 if flip horizontal
-	        scaleV = flipV ? -1 : 1, // Set verical scale to -1 if flip vertical
-	        posX = flipH ? width * -1 : 0, // Set x position to -100% if flip horizontal 
-	        posY = flipV ? height * -1 : 0; // Set y position to -100% if flip vertical
+	flipImage(image, ctx) {
+
 	    
 	    ctx.save(); // Save the current state
-	    ctx.scale(-1, scaleV); // Set scale to flip the image
-	    ctx.drawImage(image); // draw the image
+		var x = image.x + image.w / 2 
+	    ctx.scale(-1, 1); // Set scale to flip the image
+	    ctx.translate(-x, 0)
+	    image.game.drawImage(image); // draw the image
 	    ctx.restore(); // Restore the last saved state
 	}
 
 	draw() {
 		if (this.flipX) {
-			this.flipImage(this, this.game.context)
+		 	this.game.context.save(); // Save the current state
+			var x = this.x + this.w / 2 
+		    this.game.context.translate(x, 0)
+		    this.game.context.scale(-1, 1); // Set scale to flip the image
+		    this.game.context.translate(-x, 0)
+		    this.game.drawImage(this); // draw the image
+		    this.game.context.restore(); // Restore the last saved state
+		} else {
+			this.game.drawImage(this)
 		}
-		this.game.drawImage(this)
+		
 	}
 
 	changeAnimation(name, speed) {
@@ -70,6 +79,8 @@ class GuaAnimation {
 	}
 
 	move(speed, keyStatus) {
+		this.flipX = (speed < 0)
+		log(this.flipX)
 		this.x += speed
 		// 代码优化
 		// if (keyStatus == 'down') {
